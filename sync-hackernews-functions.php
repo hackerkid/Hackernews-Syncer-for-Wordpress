@@ -1,13 +1,13 @@
 <?php
 
 
-function hns_insert_post()
+function hns_insert_post($title, $content)
 {
 
-
+	
 	$my_post = array(
-  	'post_title'    => 'Epic Post',
-  	'post_content'  => 'This is my post.',
+  	'post_title'    => $title,
+  	'post_content'  => $content,
   	'post_status'   => 'publish',
   	'post_author'   => 1,
   	'post_category' => array(2)
@@ -59,7 +59,7 @@ function jal_install() {
 	global $wpdb;
 	global $jal_db_version;
 
-	$table_name = $wpdb->prefix . 'hacketnewposts';
+	$table_name = 'hackernewsposts';
 	
 	$charset_collate = $wpdb->get_charset_collate();
 
@@ -75,7 +75,7 @@ function jal_install() {
 }
 
 
-function hns_insert_posts()
+function hns_core_engine()
 {
 
 $opts = array(
@@ -93,36 +93,61 @@ $wow = file_get_contents("https://hacker-news.firebaseio.com/v0/topstories.json?
 $ans = json_decode($wow, true);
 $length = count($ans);
 echo $length;
-for ($i=0; $i < $length ; $i++ ) { 
+for ($i=0; $i < 20 ; $i++ ) { 
 	$key = $ans[$i];
 	$url = 'https://hacker-news.firebaseio.com/v0/item/'.$key.'.json?print=pretty';
 	$post = file_get_contents($url, false, $context);
 	$content = json_decode($post);
-	echo $content->{'by'};
-	echo "\n";
+	//echo $content->{'by'};
+	//echo "\n";
+	$title = $content->{'title'};
+	$body = $content->{'url'};
 	echo $content->{'title'};	
 	echo "\n";
 	echo $content->{'score'};
 	echo "\n";
+	$id = $content->{'id'};
+	echo $id;
+	echo "\n";
+	
+	if(hns_select($id)) {
+		echo "awesome NOTHING to do";
+	}
+
+	else {
+		echo "not found\n";
+		hns_insert_post($title, $body);
+		hns_add_this_id($id);
+	}
+
 }
 
 
 }
 
-function hns_select()
+function hns_add_this_id($id)
 {
+	global $wpdb;
+	$wpdb->query("INSERT into hackernewsposts (id) VALUES('$id')");
+}
+
+function hns_select($id)
+{	global $wpdb;
 	$fivesdrafts = $wpdb->get_results( 
 	"
 	SELECT id 
-	FROM $wpdb->hacketnewposts
+	FROM hackernewsposts where id = '$id'
 	"
 	);
-
+	$count = 0;
 	foreach ( $fivesdrafts as $fivesdraft ) 
 	{
-		echo id;
+		echo $fivesdraft->id;
 		echo "\n";
+		$count++;
 	}
+
+	return $count;
 
 }
 
