@@ -1,7 +1,7 @@
 <?php
 
 
-function hns_insert_post($title, $content)
+function hns_insert_post($title, $content, $category)
 {
 
 	
@@ -10,17 +10,16 @@ function hns_insert_post($title, $content)
   	'post_content'  => $content,
   	'post_status'   => 'publish',
   	'post_author'   => 1,
-  	'post_category' => array(2)
+  	'post_category' => array($category)
 	);
 
 	wp_insert_post( $my_post );
 }
 
 function my_plugin_settings() {
-register_setting( 'my-plugin-settings-group', 'accountant_name' );
-register_setting( 'my-plugin-settings-group', 'accountant_phone' );
-register_setting( 'my-plugin-settings-group', 'accountant_email' );
-register_setting( 'my-plugin-settings-group', 'accountant_wife' );
+register_setting( 'my-plugin-settings-group', 'minimum-karma' );
+register_setting( 'my-plugin-settings-group', 'category' );
+register_setting( 'my-plugin-settings-group', 'frequency' );
 } 
 
 function hns_display_form()
@@ -28,24 +27,51 @@ function hns_display_form()
 
 ?>
 <div class="wrap">
-<h2>Staff Details</h2>
+<h2>Advanced Hacker News Sync Settings</h2>
  
 <form method="post" action="options.php">
 <?php settings_fields( 'my-plugin-settings-group' ); ?>
 <?php do_settings_sections( 'my-plugin-settings-group' ); ?>
 <table class="form-table">
 <tr valign="top">
-<th scope="row">Accountant Name</th>
-<td><input type="text" name="accountant_name" value="<?php echo esc_attr( get_option('accountant_name') ); ?>" /></td>
+<th scope="row">Minimum Karma of the links</th>
+<td><input type="text" name="minimum-karma" value="<?php echo esc_attr( get_option('minimum-karma') ); ?>" /></td>
 </tr>
+
 <tr valign="top">
-<th scope="row">Accountant Phone Number</th>
-<td><input type="text" name="accountant_phone" value="<?php echo esc_attr( get_option('accountant_phone') ); ?>" /></td>
+<th scope="row">When should be updated</th>
+<td><select type="text" name="frequency" value="<?php echo esc_attr( get_option('frequency') ); ?>" >
+<option <?php if(get_option('frequency') == "hourly") { echo 'selected="selected"';}?> value = "hourly">Hourly</option> 
+<option <?php if(get_option('frequency') == "twicedaily") { echo 'selected="selected"';}?> value = "twicedaily">Twice Daily</option> 
+<option <?php if(get_option('frequency') == "daily") { echo 'selected="selected"';}?> value = "daily">Daily</option> 
+</select>
+
+
+</td>
 </tr>
+
 <tr valign="top">
-<th scope="row">Accountant Email</th>
-<td><input type="text" name="accountant_email" value="<?php echo esc_attr( get_option('accountant_email') ); ?>" /></td>
+<th scope="row"> Category of the post </th>
+<td>
+<select name='category' id='cat' class='postform' >
+		
+<?php
+	 $categories = get_categories(); 
+	 foreach ($categories as $category) {
+?>
+	<option class="level-0" <?php if(get_option('category') == $category->cat_ID) { echo 'selected="selected"';}?> value="<?php echo $category->cat_ID; ?>"><?php echo $category->cat_name; ?></option>
+<?php
+	
+	}
+?>
+
+
+</select>
+
+</td>
 </tr>
+
+
 </table>
 <?php submit_button(); ?>
  
@@ -55,7 +81,7 @@ function hns_display_form()
 
 }
 
-function jal_install() {
+function hns_jal_install() {
 	global $wpdb;
 	global $jal_db_version;
 
@@ -92,6 +118,7 @@ $context = stream_context_create($opts);
 $wow = file_get_contents("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty", false, $context);
 $ans = json_decode($wow, true);
 $length = count($ans);
+$minimum = get_option('minimum-karma');
 echo $length;
 for ($i=0; $i < 20 ; $i++ ) { 
 	$key = $ans[$i];
@@ -104,19 +131,19 @@ for ($i=0; $i < 20 ; $i++ ) {
 	$body = $content->{'url'};
 	echo $content->{'title'};	
 	echo "\n";
-	echo $content->{'score'};
-	echo "\n";
+	$score = $content->{'score'};
 	$id = $content->{'id'};
 	echo $id;
 	echo "\n";
 	
-	if(hns_select($id)) {
+	if(hns_select($id) or $score < $minimum) {
 		echo "awesome NOTHING to do";
 	}
 
 	else {
-		echo "not found\n";
-		hns_insert_post($title, $body);
+		$category = get_option('category');	
+		$body = "<a href = '$body'>$title</a>";
+		hns_insert_post($title, $body, $category);
 		hns_add_this_id($id);
 	}
 
@@ -152,33 +179,18 @@ function hns_select($id)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-/*
-function my_project_updated_send_email(	) {
-
-	$my_post = array(
-  	'post_title'    => 'My post',
-  	'post_content'  => 'This is my post.',
-  	'post_status'   => 'publish',
-  	'post_author'   => 1,
-  	'post_category' => array(8,39)
-	);
-
-	wp_insert_post( $my_post );
-
+function hns_prefix_setup_schedule() {
+	$freq = get_option('frequency');
+	if ( ! wp_next_scheduled( 'hns_prefix_hourly_event' ) ) {
+		wp_schedule_event( time(), $freq, 'hns_prefix_hourly_event');
+	}
 }
 
-add_action( 'publish_post', 'my_project_updated_send_email' );
-*/
+
+
+function hns_prefix_do_this_hourly() {
+	hns_core_engine();
+}
+
 
 ?>
