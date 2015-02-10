@@ -35,15 +35,15 @@ function hns_display_form()
 <table class="form-table">
 <tr valign="top">
 <th scope="row">Minimum Karma of the links</th>
-<td><input type="text" name="minimum-karma" value="<?php echo esc_attr( get_option('minimum-karma') ); ?>" /></td>
+<td><input type="text" name="minimum-karma" value="<?php echo esc_attr( get_option('minimum-karma', 50) ); ?>" /></td>
 </tr>
 
 <tr valign="top">
 <th scope="row">When should be updated</th>
-<td><select type="text" name="frequency" value="<?php echo esc_attr( get_option('frequency') ); ?>" >
-<option <?php if(get_option('frequency') == "hourly") { echo 'selected="selected"';}?> value = "hourly">Hourly</option> 
-<option <?php if(get_option('frequency') == "twicedaily") { echo 'selected="selected"';}?> value = "twicedaily">Twice Daily</option> 
-<option <?php if(get_option('frequency') == "daily") { echo 'selected="selected"';}?> value = "daily">Daily</option> 
+<td><select type="text" name="frequency" value="<?php echo esc_attr( get_option('frequency', 'hourly') ); ?>" >
+<option <?php if(get_option('frequency', 'hourly') == "hourly") { echo 'selected="selected"';}?> value = "hourly">Hourly</option> 
+<option <?php if(get_option('frequency', 'hourly') == "twicedaily") { echo 'selected="selected"';}?> value = "twicedaily">Twice Daily</option> 
+<option <?php if(get_option('frequency', 'hourly') == "daily") { echo 'selected="selected"';}?> value = "daily">Daily</option> 
 </select>
 
 
@@ -118,7 +118,7 @@ $context = stream_context_create($opts);
 $wow = file_get_contents("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty", false, $context);
 $ans = json_decode($wow, true);
 $length = count($ans);
-$minimum = get_option('minimum-karma');
+$minimum = get_option('minimum-karma', 50);
 echo $length;
 for ($i=0; $i < 20 ; $i++ ) { 
 	$key = $ans[$i];
@@ -180,7 +180,7 @@ function hns_select($id)
 
 
 function hns_prefix_setup_schedule() {
-	$freq = get_option('frequency');
+	$freq = get_option('frequency', 'hourly');
 	if ( ! wp_next_scheduled( 'hns_prefix_hourly_event' ) ) {
 		wp_schedule_event( time(), $freq, 'hns_prefix_hourly_event');
 	}
