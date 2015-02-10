@@ -9,7 +9,8 @@ License: GPLv3
 Automatically posts the links from Hacker News to Wordpress blog which satisfies a minimum Karma criteria
 
 == Description ==
-The plugin will automatically check the Hacker News (news.ycombinator.com) for new links and post it automatically to the Wordpress blog. The links should have a Karma more than the one specified by the user. The plugin can be also used as a personalized Hacker News reader. The time period for checking new links can be also specified by the user
+The plugin will automatically check the Hacker News (news.ycombinator.com) for new links and post it automatically to the Wordpress blog. The links should have a Karma more than the one specified by the user. The user can also choose the time interval of the fetching process as well as the category to be posted in. The plugin can be also used as a personalized Hacker News reader. The time period for checking new links can be also specified by the user.
+
 
 == Installation ==
 Activate the plugin from the Plugins menu. Choose a minimum Karma, frequency of posting and category by visiting the Hacker News menu. Save the settings. After that the plugin would start posting automatically. 
