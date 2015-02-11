@@ -16,10 +16,10 @@ function hns_insert_post($title, $content, $category)
 	wp_insert_post( $my_post );
 }
 
-function my_plugin_settings() {
-register_setting( 'my-plugin-settings-group', 'minimum-karma' );
-register_setting( 'my-plugin-settings-group', 'category' );
-register_setting( 'my-plugin-settings-group', 'frequency' );
+function hns_settings() {
+register_setting( 'hns-settings-group', 'minimum-karma' );
+register_setting( 'hns-settings-group', 'category' );
+register_setting( 'hns-settings-group', 'frequency' );
 } 
 
 function hns_display_form()
@@ -30,8 +30,8 @@ function hns_display_form()
 <h2>Advanced Hacker News Sync Settings</h2>
  
 <form method="post" action="options.php">
-<?php settings_fields( 'my-plugin-settings-group' ); ?>
-<?php do_settings_sections( 'my-plugin-settings-group' ); ?>
+<?php settings_fields( 'hns-settings-group' ); ?>
+<?php do_settings_sections( 'hns-settings-group' ); ?>
 <table class="form-table">
 <tr valign="top">
 <th scope="row">Minimum Karma of the links</th>

@@ -14,15 +14,15 @@ global $jal_db_version;
 $jal_db_version = '1.0';
 register_activation_hook( __FILE__, 'hns_jal_install' );
 
-add_action('admin_menu', 'my_plugin_menu');
-add_action( 'admin_init', 'my_plugin_settings' );
+add_action('admin_menu', 'hns_menu');
+add_action( 'admin_init', 'hns_settings' );
 add_action( 'wp', 'hns_prefix_setup_schedule' );
 add_action( 'hns_prefix_hourly_event', 'hns_prefix_do_this_hourly' );
 
 
 
-function my_plugin_menu() {
-	add_menu_page('My Plugin Settings', 'Hacker News', 'administrator', 'Hacker-News-Sync', 'hacker_news_syncer', 'dashicons-admin-generic');
+function hns_menu() {
+	add_menu_page('Hacker News Sync Settings', 'Hacker News', 'administrator', 'Hacker-News-Sync', 'hacker_news_syncer', 'dashicons-admin-generic');
 }
 
 
