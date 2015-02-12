@@ -5,7 +5,10 @@ Send pull request for extending features.
 
 ##Screenshots
 
-##Plugin Settings Page
+###Plugin Settings Page
+![hello](https://github.com/hackerkid/Hackernews-Reader-for-Wordpress/blob/master/assets/screenshot-1.png)
 
-##Sample Posts
+###Sample Posts
+![hello](https://github.com/hackerkid/Hackernews-Reader-for-Wordpress/blob/master/assets/screenshot-2.png)
+
 
