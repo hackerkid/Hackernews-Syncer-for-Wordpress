@@ -1,6 +1,6 @@
 <?php
 /**
-  * Plugin Name: Advanced Hacker News Syc
+  * Plugin Name:Hacker News Reader
   * Plugin URI: https://github.com/hackerkid/Advanced-Hackernews-Wordpress-Sync
   * Description: Gets links from Hacker News satisfying a minimum Karma and post it to the blog automatically. 
   * Version: 1.0
