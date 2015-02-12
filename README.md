@@ -5,6 +5,7 @@ Send pull request for extending features.
 
 ##Screenshots
 
-![alt tag](https://raw.github.com/hackerkid/Hackernews-Reader-for-Wordpress/blob/master/assets/screenshot-1.png)
-![alt tag](https://raw.github.com/hackerkid/Hackernews-Reader-for-Wordpress/blob/master/assets/screenshot-2.png)
+##Plugin Settings Page
+
+##Sample Posts
 
