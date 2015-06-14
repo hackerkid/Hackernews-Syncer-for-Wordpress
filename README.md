@@ -1,5 +1,5 @@
-# Hacker News Reader For Wordpress
-A plugin for syncing the Hackenews posts with Wordpress blog. Can be used as a Personlized Hacker News reader which only fetches the posts that satisfies a minimum Karma provided by you. The plugin does the manual work of revisting Hacker News manually for Good posts. 
+# Hacker News Syncer For Wordpress
+A plugin for syncing the Hackenews posts with Wordpress blog. It syncs your Wordpress blog with Hacker news posts which satisfies a minimum Karma.
 
 ##Screenshots
 
