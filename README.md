@@ -1,5 +1,5 @@
 # Hacker News Syncer For Wordpress
-A plugin for syncing the Hackenews posts with Wordpress blog. It syncs your Wordpress blog with Hacker news posts which satisfies a minimum Karma.
+A plugin for syncing the Hackernews posts with Wordpress blog. It syncs your Wordpress blog with Hacker news posts which satisfies a minimum Karma.
 
 ##Screenshots
 
